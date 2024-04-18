@@ -3,7 +3,7 @@
 <item android:drawable="@color/splashBackground" />
 
 <item
-    android:drawable="@drawable/logologo"
+    android:drawable="@drawable/logo_108x82"
     android:gravity="center" />
 
 </layer-list>
