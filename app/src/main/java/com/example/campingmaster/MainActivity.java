@@ -5,6 +5,8 @@ import androidx.core.splashscreen.SplashScreen;
 
 import android.os.Bundle;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -12,6 +14,6 @@ public class MainActivity extends AppCompatActivity {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
     }
 }

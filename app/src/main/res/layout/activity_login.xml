@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LoginLayout"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="185dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="112dp"
+            android:layout_marginTop="216dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo_name" />
+
+        <EditText
+            android:id="@+id/login_ID"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/main_input_layout"
+            android:hint="@string/getId"
+            android:textAppearance="@style/TextLabel">
+        </EditText>
+
+        <EditText
+            android:id="@+id/login_PW"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/main_input_layout"
+            android:hint="@string/getPW"
+            android:inputType="textPassword"
+            android:textAppearance="@style/TextLabel">
+        </EditText>
+
+        <Button
+            android:id="@+id/LongInButton"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_login_button"
+            android:text="@string/login" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginLayout"
+        app:layout_constraintVertical_bias="0.1">
+
+        <TextView
+            android:id="@+id/FindID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getId"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/FindPW"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/FindPW"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getPW"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/SignUp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/FindID"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/SignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/singUp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/FindPW"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
