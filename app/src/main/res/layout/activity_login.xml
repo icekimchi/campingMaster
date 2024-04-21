@@ -8,6 +8,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/LoginLayout"
         android:orientation="vertical"
@@ -15,10 +20,17 @@
 
         <ImageView
             android:id="@+id/logoImage"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="150dp"
+            app:srcCompat="@drawable/logo_img" />
+
+        <ImageView
+            android:id="@+id/logoTitle"
             android:layout_width="185dp"
             android:layout_height="36dp"
             android:layout_marginStart="112dp"
-            android:layout_marginTop="216dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo_name" />
@@ -55,6 +67,7 @@
             android:layout_weight="1"
             android:background="@drawable/main_login_button"
             android:text="@string/login" />
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,23 +84,33 @@
             android:id="@+id/FindID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/getId"
+            android:text="@string/findID"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/FindPW"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="@color/black" />
+
         <TextView
             android:id="@+id/FindPW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/getPW"
+            android:text="@string/findPW"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/SignUp"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/FindID"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="@color/black" />
 
         <TextView
             android:id="@+id/SignUp"
@@ -100,6 +123,51 @@
             app:layout_constraintStart_toEndOf="@+id/FindPW"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+        >
+
+        <LinearLayout
+            android:id="@+id/login_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/black" />
+
+            <TextView
+                android:id="@+id/text_kakaoLogin"
+                android:layout_width="69dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:text="간편로그인" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/black" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/kakao_logo" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
