@@ -17,12 +17,22 @@
     <string name="cat_seoul">서울권</string>
 
     <!--keyword-->
-    <string name="key_sunset">일몰명소</string>
-    <string name="key_sunrise">일몰명소</string>
-    <string name="key_bbq">바베큐</string>
-    <string name="key_gamsung">감성캠핑</string>
-    <string name="key_spring">봄</string>
-    <string name="key_summer">여름</string>
-    <string name="key_fall">가을</string>
-    <string name="key_winter">겨울</string>
+    <string name="key_sunset">#일몰명소</string>
+    <string name="key_sunrise">#일몰명소</string>
+    <string name="key_bbq">#바베큐</string>
+    <string name="key_gamsung">#감성캠핑</string>
+    <string name="key_spring">#봄</string>
+    <string name="key_summer">#여름</string>
+    <string name="key_fall">#가을</string>
+    <string name="key_winter">#겨울</string>
+    <string name="key_play">#놀이시설</string>
+    <string name="key_baby">#애견동반</string>
+    <string name="key_tour">#관광지주변</string>
+    <string name="key_beach">#해변</string>
+    <string name="key_deck">#데크</string>
+    <string name="key_fish">#낚시</string>
+
+    <!--category icon size-->
+    <dimen name="icon_width">50dp</dimen>
+    <dimen name="icon_height">50dp</dimen>
 </resources>
