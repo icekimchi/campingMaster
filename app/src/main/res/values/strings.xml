@@ -6,4 +6,23 @@
     <string name="findPW">비밀번호찾기</string>
     <string name="singUp">회원가입</string>
     <string name="login">로그인</string>
+
+    <!-- Category theme. -->
+    <string name="cat_normal">일반야영장</string>
+    <string name="cat_car">자동차야영</string>
+    <string name="cat_glamping">글램핑</string>
+    <string name="cat_pool">물놀이장</string>
+    <string name="cat_caravan">카라반</string>
+    <string name="cat_animal">애견동반</string>
+    <string name="cat_seoul">서울권</string>
+
+    <!--keyword-->
+    <string name="key_sunset">일몰명소</string>
+    <string name="key_sunrise">일몰명소</string>
+    <string name="key_bbq">바베큐</string>
+    <string name="key_gamsung">감성캠핑</string>
+    <string name="key_spring">봄</string>
+    <string name="key_summer">여름</string>
+    <string name="key_fall">가을</string>
+    <string name="key_winter">겨울</string>
 </resources>
