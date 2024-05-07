@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CampingMaster"
         tools:targetApi="34">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCfcPWqe4lXyKvOp5Eq-fhhDBg8I3OQW3c" />
 
         <activity
             android:name=".MainActivity"
@@ -27,5 +30,7 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>
