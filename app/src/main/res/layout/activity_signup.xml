@@ -1,6 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LoginLayout"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="150dp"
+            app:srcCompat="@drawable/logo_img" />
+
+        <ImageView
+            android:id="@+id/logoTitle"
+            android:layout_width="185dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="112dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@color/splashBackground"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="70dp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/login_email"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/main_input_layout"
+            android:hint="@string/joinEmail"
+            android:textAppearance="@style/TextLabel">
+        </EditText>
+
+        <EditText
+            android:id="@+id/login_ID"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/main_input_layout"
+            android:hint="@string/joinId"
+            android:textAppearance="@style/TextLabel">
+        </EditText>
+
+        <EditText
+            android:id="@+id/login_PW"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/main_input_layout"
+            android:hint="@string/joinPw"
+            android:inputType="textPassword"
+            android:textAppearance="@style/TextLabel">
+        </EditText>
+
+        <android.widget.Button
+            android:id="@+id/SignUpButton"
+            android:layout_width="350dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_login_button"
+            android:text="@string/singUp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="50dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/login_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/black" />
+
+            <TextView
+                android:id="@+id/text_kakaoLogin"
+                android:layout_width="69dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:text="간편로그인" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/black" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/kakao_logo" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
