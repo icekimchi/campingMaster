@@ -35,4 +35,11 @@
     <!--category icon size-->
     <dimen name="icon_width">50dp</dimen>
     <dimen name="icon_height">50dp</dimen>
+
+    <!--tab layout-->
+    <string name="tab_home">홈</string>
+    <string name="tab_search">검색</string>
+    <string name="tab_chat">채팅</string>
+    <string name="tab_info">내정보</string>
+
 </resources>
