@@ -23,6 +23,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.example.campingmaster.databinding.ActivityMainBinding;
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private TextView textView_signup;
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edit_login_id;
     private EditText edit_login_pw;
     private RetrofitService service;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("로그인 에러 발생", t.getMessage());
             }
         });
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 }
 
