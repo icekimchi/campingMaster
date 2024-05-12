@@ -17,8 +17,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.campingmaster.adapter.ViewPager2Adapter;
 import com.example.campingmaster.databinding.ActivityMainBinding;
 import com.example.campingmaster.fragment.ChatFragment;
-import com.example.campingmaster.fragment.InfoFragment;
 import com.example.campingmaster.fragment.MainFragment;
+import com.example.campingmaster.fragment.InfoFragment;
 import com.example.campingmaster.fragment.SearchFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -112,3 +112,4 @@ public class MainActivity extends AppCompatActivity
         });
 }
 }
+
