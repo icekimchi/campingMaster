@@ -43,7 +43,7 @@
         </TextView>
 
         <EditText
-            android:id="@+id/login_email"
+            android:id="@+id/signup_email"
             android:layout_width="350dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
@@ -54,7 +54,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/login_ID"
+            android:id="@+id/signup_Id"
             android:layout_width="350dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
@@ -65,7 +65,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/login_PW"
+            android:id="@+id/signup_Pw"
             android:layout_width="350dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
