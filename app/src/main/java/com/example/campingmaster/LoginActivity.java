@@ -2,23 +2,37 @@ package com.example.campingmaster;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
+import com.example.campingmaster.api.RetrofitClient;
+import com.example.campingmaster.api.RetrofitService;
+import com.example.campingmaster.api.dto.LogInRequestDto;
+import com.example.campingmaster.api.dto.LogInResponseDto;
+import com.example.campingmaster.api.dto.SignUpRequestDto;
+import com.example.campingmaster.api.dto.SignUpResponseDto;
 import com.example.campingmaster.databinding.ActivityLoginBinding;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
-    private TextView textView_signup;                 // 회원가입 버튼
-    private Button btn_login;                // 로그인 버튼
-    private EditText edit_login_id;                // id 에디트
-    private EditText edit_login_pw;                // pw 에디트
+    private TextView textView_signup;
+    private Button btn_login;
+    private EditText edit_login_id;
+    private EditText edit_login_pw;
+    private RetrofitService service;
+
 
 
     @Override
@@ -29,20 +43,23 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        boolean isLoggedIn = checkLoginStatus();
-
-        if (isLoggedIn) {
-            // 로그인되어 있으면 MainActivity로 이동
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        } else {
-            // 로그인되어 있지 않으면 LoginActivity에 남아있음
-        }
+        service = RetrofitClient.getClient().create(RetrofitService.class);
 
         textView_signup = binding.SignUp;
         btn_login = (Button)binding.LogInButton;
         edit_login_id = binding.loginID;
         edit_login_pw = binding.loginPW;
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String memberIdText = edit_login_id.getText().toString();
+                String memberPwText = edit_login_pw.getText().toString();
+
+                LogIn(new LogInRequestDto(memberIdText, memberPwText));
+            }
+        });
+
 
         textView_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,11 +71,26 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private boolean checkLoginStatus() {
-        // 여기에 로그인 여부를 확인하는 로직을 구현
-        // 예시로 항상 true 반환
-        return false;
-    }
+    private void LogIn(LogInRequestDto data){
+        // enqueue()에 파라미터로 넘긴 콜백 - 통신이 성공/실패 했을 때 수행할 동작을 재정의
+        service.userLogIn(data).enqueue(new Callback<LogInResponseDto>() {
+            @Override
+            public void onResponse(Call<LogInResponseDto> call, Response<LogInResponseDto> response) {
+                LogInResponseDto result = response.body();
+                Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
 
+                if (result.getCode() == 200) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LogInResponseDto> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "로그인 에러 발생", Toast.LENGTH_SHORT).show();
+                Log.e("로그인 에러 발생", t.getMessage());
+            }
+        });
+    }
 }
 
