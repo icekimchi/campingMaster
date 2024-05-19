@@ -39,7 +39,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -55,13 +54,9 @@ dependencies {
     implementation ("com.google.android.material:material:1.2.0-alpha06")
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
-<<<<<<< HEAD
     //retrofit2
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("com.squareup.okhttp3:logging-interceptor:3.11.0")
-=======
-
->>>>>>> 0199da6ec49650f501638839ea44aa069ce62fc1
 }

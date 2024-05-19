@@ -87,11 +87,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LogInResponseDto> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "회원가입 에러 발생", Toast.LENGTH_SHORT).show();
-                Log.e("회원가입 에러 발생", t.getMessage());
+                Toast.makeText(LoginActivity.this, "로그인 에러 발생", Toast.LENGTH_SHORT).show();
+                Log.e("로그인 에러 발생", t.getMessage());
             }
         });
     }
-
 }
 
