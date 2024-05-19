@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_main"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:id="@+id/layout_search"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_top"
@@ -56,23 +57,30 @@
             android:text="검색"
             android:textSize="24sp"
             android:textStyle="bold"/>
+    </LinearLayout>
 
-        <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:endIconDrawable="@drawable/ic_tab_search"
+        app:endIconMode="custom"
+        app:layout_constraintStart_toStartOf="@id/guide_left"
+        app:layout_constraintEnd_toEndOf="@id/guide_right"
+        app:layout_constraintTop_toBottomOf="@id/guide_top">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:hint="검색어 입력"
-            android:inputType="text"
-            android:background="@drawable/search_round"
-        />
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-
-    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_recent_searches"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -94,10 +102,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"/>
-
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_popular_searches"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -126,8 +134,4 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

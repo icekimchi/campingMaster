@@ -1,6 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/layout_search"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/logo_231x153"        />
+<!--            android:background="#010001"-->
+
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사용자 이름"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user@example.com"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"/>
+
+        <Button
+            android:id="@+id/button_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="프로필 확인"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/button_heart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="내가 찜한 상품"
+            android:layout_marginTop="8dp"/>
+
+
+        <Button
+            android:id="@+id/button_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="환경설정"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/button_alarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="공지사항"
+            android:layout_marginTop="8dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:background="#F0F0F7">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(주)캠핑의 고수"
+                android:textColor="#003740"
+                android:fontFamily="@font/apple_b"
+                android:gravity="start"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이용 문의"
+                android:fontFamily="@font/apple_b"
+                android:gravity="start"
+                android:textSize="14sp"
+                android:textColor="#EA484E"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/apple_m"
+                android:text="박정현 anna010828@chungbuk.ac.kr\n변수연 sooyoun1128@chungbuk.ac.kr"
+                android:gravity="start"
+                android:textColor="#010001"
+                android:textSize="15sp"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

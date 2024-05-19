@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_balloon_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/chat_balloon">
+
+    <TextView
+        android:id="@+id/senderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/timestampTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#808080"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        android:layout_below="@id/senderTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"/>
+
+</RelativeLayout>
+
