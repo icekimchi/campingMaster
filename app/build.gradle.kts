@@ -55,4 +55,5 @@ dependencies {
     implementation ("com.google.android.material:material:1.2.0-alpha06")
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
+
 }
