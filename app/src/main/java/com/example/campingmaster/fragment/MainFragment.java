@@ -1,20 +1,16 @@
 package com.example.campingmaster.fragment;
 
-<<<<<<< HEAD
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-=======
 import android.os.Bundle;
->>>>>>> 60f6660 ([FEAT] 탭레이아웃 추가)
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< HEAD
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -118,7 +116,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
             startActivity(intent);
         });
     }
-
 
     private void searchCategory(String sqlQuery, String param) {
         Map<String, Object> query = new HashMap<>();
@@ -225,6 +222,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
     }
 
     public void setDefaultLocation() {
+        //디폴트 위치, Seoul
         LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
@@ -283,51 +281,5 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
-=======
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.example.campingmaster.R;
-import com.example.campingmaster.databinding.FragmentInfoBinding;
-import com.example.campingmaster.databinding.FragmentMainBinding;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-public class MainFragment extends Fragment implements OnMapReadyCallback {
-    private GoogleMap map;
-
-    private FragmentMainBinding myBinding;
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myBinding= FragmentMainBinding.inflate(inflater);
-        return myBinding.getRoot();
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        map = googleMap;
-
-        LatLng seoul = new LatLng(37.56, 126.97);
-
-        MarkerOptions options;
-        new MarkerOptions().position(seoul)
-                .title("서울")
-                .snippet("한국의 수도");
-        map.addMarker(new MarkerOptions());
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 10));
->>>>>>> 60f6660 ([FEAT] 탭레이아웃 추가)
     }
 }
