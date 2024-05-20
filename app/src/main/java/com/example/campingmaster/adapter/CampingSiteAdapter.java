@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CampingSiteAdapter extends RecyclerView.Adapter<CampingSiteAdapter.ViewHolder> {
 
-    private List<CampingSiteDto> campingSites = new ArrayList<>();
+    private List<CampingSiteDto> campingSites;
 
     public CampingSiteAdapter(List<CampingSiteDto> campingSites) {
         this.campingSites = campingSites;
@@ -24,14 +24,16 @@ public class CampingSiteAdapter extends RecyclerView.Adapter<CampingSiteAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_camping_site, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_campsite_result, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CampingSiteDto site = campingSites.get(position);
-        // Bind other fields...
+    public void onBindViewHolder(@NonNull CampingSiteViewHolder holder, int position) {
+        CampingSiteDto campsite = campingSites.get(position);
+        holder.itemTitle.setText(campsite.getSiteName());
+        holder.itemDetail.setText(campsite.getLineIntro());
+        Glide.with(context).load(campsite.getImgUrl()).into(holder.itemImage);
     }
 
     @Override

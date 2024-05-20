@@ -9,6 +9,7 @@ import com.example.campingmaster.api.member.dto.SignUpRequestDto;
 import com.example.campingmaster.api.member.dto.SignUpResponseDto;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,7 +27,7 @@ public interface RetrofitService {
 
     @GET("/basedList")
     Call<List<CampingSiteDto>> searchBasedList();
-    @GET("/api/executeQuery")
-    Call<List<CampingSiteDto>> searchQuery(@Body String sqlQuery);
+    @GET("/executeQuery")
+    Call<List<CampingSiteDto>> searchQuery(@Body Map<String, Object> query);
 
 }

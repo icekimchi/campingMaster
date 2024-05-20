@@ -28,8 +28,10 @@ import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,30 +70,35 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mapFragment.getMapAsync(this);
 
-        setupImageViewClick(view, R.id.cat_normal, "SELECT g FROM GoCampingItem g WHERE g.category LIKE '%일반야영장%'");
-        setupImageViewClick(view, R.id.cat_carvan, "SELECT * FROM campsite WHERE category like '%카라반%'");
-        setupImageViewClick(view, R.id.cat_glamping, "SELECT * FROM campsite WHERE category like '%글램핑%'");
-        setupImageViewClick(view, R.id.cat_sunrise, "SELECT * FROM campsite WHERE thema_envrn_cl like '%일출%'");
-        setupImageViewClick(view, R.id.cat_sunset, "SELECT * FROM campsite WHERE thema_envrn_cl like '%일몰%'");
-        setupImageViewClick(view, R.id.cat_spring, "SELECT * FROM campsite WHERE season like '%봄%'");
-        setupImageViewClick(view, R.id.cat_summer, "SELECT * FROM campsite WHERE season like '%여름%'");
-        setupImageViewClick(view, R.id.cat_animal, "SELECT * FROM campsite WHERE pet_allowed=1");
-        setupImageViewClick(view, R.id.cat_pool, "SELECT * FROM campsite WHERE thema_envrn_cl like '%물놀이%'");
-        setupImageViewClick(view, R.id.cat_seoul, "SELECT * FROM campsite WHERE address like '%서울%'");
+        setupImageViewClick(view, R.id.cat_normal, "SELECT * FROM campsite WHERE category LIKE ?", "%일반야영장%");
+        setupImageViewClick(view, R.id.cat_carvan, "SELECT * FROM campsite WHERE category LIKE ?", "%카라반%");
+        setupImageViewClick(view, R.id.cat_glamping, "SELECT * FROM campsite WHERE category LIKE ?", "%글램핑%");
+        setupImageViewClick(view, R.id.cat_sunrise, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%일출%");
+        setupImageViewClick(view, R.id.cat_sunset, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%일몰%");
+        setupImageViewClick(view, R.id.cat_spring, "SELECT * FROM campsite WHERE season LIKE ?", "%봄%");
+        setupImageViewClick(view, R.id.cat_summer, "SELECT * FROM campsite WHERE season LIKE ?", "%여름%");
+        setupImageViewClick(view, R.id.cat_animal, "SELECT * FROM campsite WHERE pet_allowed = ?", "1");
+        setupImageViewClick(view, R.id.cat_pool, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%물놀이%");
+        setupImageViewClick(view, R.id.cat_seoul, "SELECT * FROM campsite WHERE address LIKE ?", "%서울%");
 
         return view;
     }
 
-    private void setupImageViewClick(View parentView, int imageViewId, String sqlQuery) {
+    private void setupImageViewClick(View parentView, int imageViewId, String sqlQuery, String param) {
         ImageView imageView = parentView.findViewById(imageViewId);
         imageView.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Searching for category", Toast.LENGTH_SHORT).show();
-            searchCategory(sqlQuery);
+            searchCategory(sqlQuery, param);
         });
     }
 
-    private void searchCategory(String sqlQuery) {
-        service.searchQuery(sqlQuery).enqueue(new Callback<List<CampingSiteDto>>() {
+
+    private void searchCategory(String sqlQuery, String param) {
+        Map<String, Object> query = new HashMap<>();
+        query.put("sqlQuery", sqlQuery);
+        query.put("param", param);
+
+        service.searchQuery(query).enqueue(new Callback<List<CampingSiteDto>>() {
             @Override
             public void onResponse(Call<List<CampingSiteDto>> call, Response<List<CampingSiteDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
