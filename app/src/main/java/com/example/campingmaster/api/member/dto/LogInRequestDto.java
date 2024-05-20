@@ -1,18 +1,14 @@
-package com.example.campingmaster.api.dto;
+package com.example.campingmaster.api.member.dto;
 
 import com.google.gson.annotations.SerializedName;
-
-public class SignUpRequestDto {
+public class LogInRequestDto {
     @SerializedName("memberId")
     private String memberId;
     @SerializedName("memberPw")
     private String memberPw;
-    @SerializedName("email")
-    private String email;
 
-    public SignUpRequestDto(String memberId, String memberPw, String email) {
+    public LogInRequestDto(String memberId, String memberPw) {
         this.memberId = memberId;
         this.memberPw = memberPw;
-        this.email = email;
     }
 }

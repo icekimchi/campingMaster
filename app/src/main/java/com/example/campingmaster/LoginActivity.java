@@ -15,10 +15,8 @@ import androidx.core.splashscreen.SplashScreen;
 
 import com.example.campingmaster.api.RetrofitClient;
 import com.example.campingmaster.api.RetrofitService;
-import com.example.campingmaster.api.dto.LogInRequestDto;
-import com.example.campingmaster.api.dto.LogInResponseDto;
-import com.example.campingmaster.api.dto.SignUpRequestDto;
-import com.example.campingmaster.api.dto.SignUpResponseDto;
+import com.example.campingmaster.api.member.dto.LogInRequestDto;
+import com.example.campingmaster.api.member.dto.LogInResponseDto;
 import com.example.campingmaster.databinding.ActivityLoginBinding;
 
 import retrofit2.Call;
@@ -32,8 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edit_login_id;
     private EditText edit_login_pw;
     private RetrofitService service;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

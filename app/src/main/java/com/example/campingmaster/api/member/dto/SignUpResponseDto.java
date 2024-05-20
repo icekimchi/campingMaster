@@ -1,4 +1,4 @@
-package com.example.campingmaster.api.dto;
+package com.example.campingmaster.api.member.dto;
 
 import com.google.gson.annotations.SerializedName;
 
