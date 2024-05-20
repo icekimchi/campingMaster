@@ -15,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 
 
 public interface RetrofitService {
@@ -27,7 +28,7 @@ public interface RetrofitService {
 
     @GET("/basedList")
     Call<List<CampingSiteDto>> searchBasedList();
-    @GET("/executeQuery")
-    Call<List<CampingSiteDto>> searchQuery(@Body Map<String, Object> query);
+    @POST("/executeQuery")
+    Call<List<CampingSiteDto>> searchQuery(@Body Map<String, Object> request);
 
 }

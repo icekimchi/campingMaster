@@ -1,7 +1,9 @@
 package com.example.campingmaster.api.gocamping.dto;
 import com.google.gson.annotations.SerializedName;
 
-public class CampingSiteDto {
+import java.io.Serializable;
+
+public class CampingSiteDto implements Serializable {
     @SerializedName("contentId")
     private Long contentId;
     @SerializedName("siteName")
@@ -18,7 +20,7 @@ public class CampingSiteDto {
     private String lcationCategory;
     @SerializedName("tel")
     private String phoneNumber;
-    @SerializedName("homepage")
+    @SerializedName("homepageUrl")
     private String homepageUrl;
     @SerializedName("season")
     private String season;
@@ -30,7 +32,6 @@ public class CampingSiteDto {
     private String petAllowed;
     @SerializedName("imgUrl")
     private String imgUrl;
-
     @SerializedName("reserveUrl")
     private String reserveUrl;
 

@@ -18,8 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campingmaster.CampSiteResultActivity;
 import com.example.campingmaster.R;
-import com.example.campingmaster.adapter.CampingSiteAdapter;
+import com.example.campingmaster.adapter.CardViewAdapter;
 import com.example.campingmaster.api.RetrofitClient;
 import com.example.campingmaster.api.RetrofitService;
 import com.example.campingmaster.api.gocamping.dto.CampingSiteDto;
@@ -49,9 +50,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
     private LatLng currentPosition;
     private View mLayout;
     private PermissionHelper permissionHelper;
-    private RecyclerView recyclerView;
     private RetrofitService service;
-    private CampingSiteAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +66,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mapFragment.getMapAsync(this);
 
         setupImageViewClick(view, R.id.cat_normal, "SELECT * FROM campsite WHERE category LIKE ?", "%일반야영장%");
@@ -87,8 +85,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
     private void setupImageViewClick(View parentView, int imageViewId, String sqlQuery, String param) {
         ImageView imageView = parentView.findViewById(imageViewId);
         imageView.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Searching for category", Toast.LENGTH_SHORT).show();
-            searchCategory(sqlQuery, param);
+            Intent intent = new Intent(getActivity(), CampSiteResultActivity.class);
+            intent.putExtra("sqlQuery", sqlQuery);
+            intent.putExtra("param", param);
+            startActivity(intent);
         });
     }
 
@@ -103,8 +103,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
             public void onResponse(Call<List<CampingSiteDto>> call, Response<List<CampingSiteDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<CampingSiteDto> campingSites = response.body();
-                    adapter = new CampingSiteAdapter(campingSites);
-                    recyclerView.setAdapter(adapter);
+                    CardViewAdapter adapter = new CardViewAdapter(campingSites);
                 } else {
                     Toast.makeText(getContext(), "No data found for this category", Toast.LENGTH_SHORT).show();
                 }
@@ -258,5 +257,4 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
-
 }
