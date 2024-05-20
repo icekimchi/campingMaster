@@ -1,6 +1,5 @@
 package com.example.campingmaster;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,8 +13,8 @@ import androidx.core.splashscreen.SplashScreen;
 
 import com.example.campingmaster.api.RetrofitClient;
 import com.example.campingmaster.api.RetrofitService;
-import com.example.campingmaster.api.dto.SignUpRequestDto;
-import com.example.campingmaster.api.dto.SignUpResponseDto;
+import com.example.campingmaster.api.member.dto.SignUpRequestDto;
+import com.example.campingmaster.api.member.dto.SignUpResponseDto;
 import com.example.campingmaster.databinding.ActivitySignupBinding;
 
 import retrofit2.Call;

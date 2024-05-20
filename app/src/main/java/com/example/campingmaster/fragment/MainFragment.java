@@ -10,11 +10,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.campingmaster.R;
+import com.example.campingmaster.adapter.CampingSiteAdapter;
+import com.example.campingmaster.api.RetrofitClient;
+import com.example.campingmaster.api.RetrofitService;
+import com.example.campingmaster.api.gocamping.dto.CampingSiteDto;
 import com.example.campingmaster.utils.PermissionHelper;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
@@ -22,6 +30,10 @@ import com.google.android.gms.maps.model.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainFragment extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "googlemap_example";
@@ -35,11 +47,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
     private LatLng currentPosition;
     private View mLayout;
     private PermissionHelper permissionHelper;
+    private RecyclerView recyclerView;
+    private RetrofitService service;
+    private CampingSiteAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        mLayout = rootView.findViewById(R.id.map);
+        View  view = inflater.inflate(R.layout.fragment_main, container, false);
+        mLayout = view.findViewById(R.id.map);
+        service = RetrofitClient.getClient().create(RetrofitService.class);
         permissionHelper = new PermissionHelper(this, mLayout);
 
         locationRequest = LocationRequest.create()
@@ -49,9 +65,49 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mapFragment.getMapAsync(this);
 
-        return rootView;
+        setupImageViewClick(view, R.id.cat_normal, "SELECT g FROM GoCampingItem g WHERE g.category LIKE '%일반야영장%'");
+        setupImageViewClick(view, R.id.cat_carvan, "SELECT * FROM campsite WHERE category like '%카라반%'");
+        setupImageViewClick(view, R.id.cat_glamping, "SELECT * FROM campsite WHERE category like '%글램핑%'");
+        setupImageViewClick(view, R.id.cat_sunrise, "SELECT * FROM campsite WHERE thema_envrn_cl like '%일출%'");
+        setupImageViewClick(view, R.id.cat_sunset, "SELECT * FROM campsite WHERE thema_envrn_cl like '%일몰%'");
+        setupImageViewClick(view, R.id.cat_spring, "SELECT * FROM campsite WHERE season like '%봄%'");
+        setupImageViewClick(view, R.id.cat_summer, "SELECT * FROM campsite WHERE season like '%여름%'");
+        setupImageViewClick(view, R.id.cat_animal, "SELECT * FROM campsite WHERE pet_allowed=1");
+        setupImageViewClick(view, R.id.cat_pool, "SELECT * FROM campsite WHERE thema_envrn_cl like '%물놀이%'");
+        setupImageViewClick(view, R.id.cat_seoul, "SELECT * FROM campsite WHERE address like '%서울%'");
+
+        return view;
+    }
+
+    private void setupImageViewClick(View parentView, int imageViewId, String sqlQuery) {
+        ImageView imageView = parentView.findViewById(imageViewId);
+        imageView.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Searching for category", Toast.LENGTH_SHORT).show();
+            searchCategory(sqlQuery);
+        });
+    }
+
+    private void searchCategory(String sqlQuery) {
+        service.searchQuery(sqlQuery).enqueue(new Callback<List<CampingSiteDto>>() {
+            @Override
+            public void onResponse(Call<List<CampingSiteDto>> call, Response<List<CampingSiteDto>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<CampingSiteDto> campingSites = response.body();
+                    adapter = new CampingSiteAdapter(campingSites);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(getContext(), "No data found for this category", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CampingSiteDto>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -195,4 +251,5 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
+
 }
