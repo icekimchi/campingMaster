@@ -1,10 +1,14 @@
 package com.example.campingmaster.fragment;
 
+import com.example.campingmaster.CampSiteResultActivity;
 import com.example.campingmaster.R;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
@@ -59,7 +63,10 @@ public class SearchFragment extends Fragment {
                 String query = searchEditText.getText().toString();
                 if (!query.isEmpty()) {
                     saveRecentSearch(query); // 최근 검색어 저장
-                    performSearch(query); // 검색 수행
+                    Intent intent = new Intent(getActivity(), CampSiteResultActivity.class);
+                    intent.putExtra("sqlQuery", "SELECT * FROM campsite WHERE address LIKE ?");
+                    intent.putExtra("param", "%" + query + "%"); // query를 %로 감싸서 전달
+                    startActivity(intent);
                 }
             }
         });
