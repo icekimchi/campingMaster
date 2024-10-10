@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.Base_Theme_CampingMaster);
         super.onCreate(savedInstanceState);
 
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
