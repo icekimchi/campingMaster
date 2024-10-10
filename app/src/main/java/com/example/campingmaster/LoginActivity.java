@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.Base_Theme_CampingMaster);
         super.onCreate(savedInstanceState);
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());

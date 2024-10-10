@@ -80,15 +80,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
         setupImageViewClick(view, R.id.cat_pool, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%물놀이%");
         setupImageViewClick(view, R.id.cat_seoul, "SELECT * FROM campsite WHERE address LIKE ?", "%서울%");
 
-        setupTextViewClick(view, R.id.key_water, "SELECT * FROM campsite WHERE nearby_facilities LIKE ?", "%수상레저%");
+        setupTextViewClick(view, R.id.key_spring, "SELECT * FROM campsite WHERE nearby_facilities LIKE ?", "%수상레저%");
         setupTextViewClick(view, R.id.key_fall, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%가을단풍명소%");
         setupTextViewClick(view, R.id.key_winter, "SELECT * FROM campsite WHERE season LIKE ?", "%겨울%");
-        setupTextViewClick(view, R.id.key_activity, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%액티비티%");
+        setupTextViewClick(view, R.id.key_bbq, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%액티비티%");
         setupTextViewClick(view, R.id.key_play, "SELECT * FROM campsite WHERE nearby_facilities LIKE ?", "%놀이시설%");
-        setupTextViewClick(view, R.id.key_animal, "SELECT * FROM campsite WHERE pet_allowed = ?", "1");
-        setupTextViewClick(view, R.id.key_rural, "SELECT * FROM campsite WHERE nearby_facilities LIKE ?", "%농어촌체험%");
+        setupTextViewClick(view, R.id.key_baby, "SELECT * FROM campsite WHERE pet_allowed = ?", "1");
+        setupTextViewClick(view, R.id.key_tour, "SELECT * FROM campsite WHERE nearby_facilities LIKE ?", "%농어촌체험%");
         setupTextViewClick(view, R.id.key_beach, "SELECT * FROM campsite WHERE location_category = ?", "해변");
-        setupTextViewClick(view, R.id.key_mountain, "SELECT * FROM campsite WHERE location_category LIKE ?", "%숲%");
+        setupTextViewClick(view, R.id.key_deck, "SELECT * FROM campsite WHERE location_category LIKE ?", "%숲%");
         setupTextViewClick(view, R.id.key_fish, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%낚시%");
 
         return view;
