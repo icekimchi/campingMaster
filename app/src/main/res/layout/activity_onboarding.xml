@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+>
+
+    <!-- Title Section -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="선호하는 캠핑 종류가 무엇인가요?"
+        android:textSize="24sp"
+        android:textColor="@color/splashBackground"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Subtitle Section -->
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="캠핑장 추천에 도움이 될 것이에요!"
+        android:textSize="14sp"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- GridLayout for Options -->
+    <GridLayout
+        android:id="@+id/optionsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:columnCount="2"
+        android:rowCount="4"
+        android:alignmentMode="alignMargins"
+        android:columnOrderPreserved="false"
+        app:layout_constraintTop_toBottomOf="@id/subtitleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Options as TextViews -->
+        <TextView
+            android:id="@+id/option1"
+            style="@style/OptionTextStyle"
+            android:text="카라반" />
+
+        <TextView
+            android:id="@+id/option2"
+            style="@style/OptionTextStyle"
+            android:text="글램핑" />
+
+        <TextView
+            android:id="@+id/option3"
+            style="@style/OptionTextStyle"
+            android:text="일출/일몰 명소" />
+
+        <TextView
+            android:id="@+id/option4"
+            style="@style/OptionTextStyle"
+            android:text="반려동물 동반 가능" />
+
+        <TextView
+            android:id="@+id/option5"
+            style="@style/OptionTextStyle"
+            android:text="수영장 여부" />
+
+        <TextView
+            android:id="@+id/option6"
+            style="@style/OptionTextStyle"
+            android:text="서울권" />
+
+        <TextView
+            android:id="@+id/option7"
+            style="@style/OptionTextStyle"
+            android:text="낚시" />
+
+        <TextView
+            android:id="@+id/option8"
+            style="@style/OptionTextStyle"
+            android:text="놀이시설" />
+
+    </GridLayout>
+
+    <!-- Next Button -->
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/blue"
+        android:layout_margin="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
