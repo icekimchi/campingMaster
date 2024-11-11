@@ -4,12 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
+
+    <include
+        layout="@layout/guideline_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/LoginLayout"
+        android:id="@+id/LoginHeader"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="10dp">
@@ -30,40 +36,83 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo_name" />
+    </LinearLayout>
 
-        <EditText
-            android:id="@+id/login_ID"
-            android:layout_width="350dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/main_input_layout"
-            android:hint="@string/getId"
-            android:textAppearance="@style/TextLabel">
-        </EditText>
+    <LinearLayout
+        android:id="@+id/LoginLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@id/right_guide"
+        app:layout_constraintStart_toStartOf="@id/left_guide"
+        app:layout_constraintTop_toBottomOf="@id/LoginHeader">
 
-        <EditText
-            android:id="@+id/login_PW"
-            android:layout_width="350dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/main_input_layout"
-            android:hint="@string/getPW"
-            android:inputType="textPassword"
-            android:textAppearance="@style/TextLabel">
-        </EditText>
+        <TextView
+            android:id="@+id/text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="아이디"
+            android:textSize="14sp" />
 
-        <Button
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_user_id"
+            style="@style/CustomErrorTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginID"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/place_holder"
+                android:hint="아이디"
+                android:inputType="textPassword"
+                android:padding="12dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/text_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="비밀번호"
+            android:textSize="14sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_user_password"
+            style="@style/CustomErrorTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:errorEnabled="true"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginPW"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/place_holder"
+                android:hint="비밀번호"
+                android:inputType="textPassword"
+                android:padding="12dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <android.widget.Button
             android:id="@+id/LogInButton"
             android:layout_width="350dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:background="@drawable/main_login_button"
             android:text="@string/login" />
-
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

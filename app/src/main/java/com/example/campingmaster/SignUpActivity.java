@@ -23,6 +23,7 @@ import retrofit2.Response;
 
 
 public class SignUpActivity extends AppCompatActivity {
+    private static final String TAG = "SignUpActivity";
     private ActivitySignupBinding binding;
     private Button btn_signup;
     private EditText memberId;
@@ -32,11 +33,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Log.d(TAG, "> SignUpActivity");
 
         service = RetrofitClient.getClient().create(RetrofitService.class);
 
@@ -53,12 +53,12 @@ public class SignUpActivity extends AppCompatActivity {
                 String emailText = email.getText().toString();
 
                 System.out.println(memberId.toString() + memberPw.toString() + email.toString());
-                SignUp(new SignUpRequestDto(memberIdText, memberPwText, emailText));
+                Login(new SignUpRequestDto(memberIdText, memberPwText, emailText));
             }
         });
     }
 
-    private void SignUp(SignUpRequestDto data){
+    private void Login(SignUpRequestDto data){
         // enqueue()에 파라미터로 넘긴 콜백 - 통신이 성공/실패 했을 때 수행할 동작을 재정의
         service.userSignUp(data).enqueue(new Callback<SignUpResponseDto>() {
             @Override

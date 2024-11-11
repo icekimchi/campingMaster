@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_view"
-        android:layout_above="@+id/bottom_layout"/>
+        android:layout_above="@+id/chat_input_layout" />
 
     <TextView
         android:layout_width="match_parent"
@@ -19,38 +19,43 @@
         android:layout_centerInParent="true"
         android:text="Welcome"
         android:gravity="center"
-        android:textSize="28sp"
-        />
+        android:textSize="28sp" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chat_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:padding="8dp"
-        android:id="@+id/bottom_layout">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/chat_input_background"
+        android:layout_alignParentBottom="true">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/et_msg"
-            android:layout_centerInParent="true"
-            android:hint="Write here"
-            android:padding="16dp"
-            android:layout_toLeftOf="@+id/btn_send"
-            android:background="@drawable/round_corner"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:hint="메시지 입력..."
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
             android:id="@+id/btn_send"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            />
-
-    </RelativeLayout>
+            android:contentDescription="메시지 전송"
+            android:src="@drawable/btn_chat_send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
