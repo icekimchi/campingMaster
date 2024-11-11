@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -24,14 +26,9 @@ import com.example.campingmaster.utils.PermissionHelper;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class MainFragment extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
+
+public class MainFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "googlemap_example";
     private GoogleMap mMap;
     private MapHandler mapHandler;
@@ -40,17 +37,56 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
     private FusedLocationProviderClient mFusedLocationClient;
     private PermissionHelper permissionHelper;
     private RetrofitService service;
+    private LocationCallback locationCallback;
+    private SupportMapFragment mapFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View  view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        initializeComponents();
+        setupMapFragment();
+        setupCategoryButtons(view);
+        return view;
+    }
+
+    private void initializeComponents() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         service = RetrofitClient.getClient().create(RetrofitService.class);
-        permissionHelper = new PermissionHelper(this, view);
+        permissionHelper = new PermissionHelper(this);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                if (locationResult != null && !locationResult.getLocations().isEmpty()) {
+                    Location location = locationResult.getLocations().get(locationResult.getLocations().size() - 1);
+                    updateLocationUI(location);
+                }
+            }
+        };
+    }
+
+    private void setupMapFragment() {
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment == null) {
+            mapFragment = SupportMapFragment.newInstance();
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.map, mapFragment)
+                    .commit();
+        }
         mapFragment.getMapAsync(this);
+    }
 
+    private void updateLocationUI(Location location) {
+        if (mapHandler != null && location != null) {
+            LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            String markerTitle = mapHandler.getCurrentAddress(currentPosition);
+            String markerSnippet = "위도:" + location.getLatitude() + " 경도:" + location.getLongitude();
+            mapHandler.setCurrentLocation(location, markerTitle, markerSnippet);
+        }
+    }
+
+    private void setupCategoryButtons(View view) {
         setupImageViewClick(view, R.id.cat_normal, "SELECT * FROM campsite WHERE category LIKE ?", "%일반야영장%");
         setupImageViewClick(view, R.id.cat_carvan, "SELECT * FROM campsite WHERE category LIKE ?", "%카라반%");
         setupImageViewClick(view, R.id.cat_glamping, "SELECT * FROM campsite WHERE category LIKE ?", "%글램핑%");
@@ -72,110 +108,81 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Activi
         setupTextViewClick(view, R.id.key_beach, "SELECT * FROM campsite WHERE location_category = ?", "해변");
         setupTextViewClick(view, R.id.key_deck, "SELECT * FROM campsite WHERE location_category LIKE ?", "%데크%");
         setupTextViewClick(view, R.id.key_fish, "SELECT * FROM campsite WHERE thema_envrn_cl LIKE ?", "%낚시%");
-
-        return view;
     }
 
     private void setupImageViewClick(View parentView, int imageViewId, String sqlQuery, String param) {
         ImageView imageView = parentView.findViewById(imageViewId);
-        imageView.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CampSiteResultActivity.class);
-            intent.putExtra("sqlQuery", sqlQuery);
-            intent.putExtra("param", param);
-            startActivity(intent);
-        });
+        imageView.setOnClickListener(v -> launchResultActivity(sqlQuery, param));
     }
 
-    private void setupTextViewClick(View parentView, int imageViewId, String sqlQuery, String param) {
-        TextView textView = parentView.findViewById(imageViewId);
-        textView.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CampSiteResultActivity.class);
-            intent.putExtra("sqlQuery", sqlQuery);
-            intent.putExtra("param", param);
-            startActivity(intent);
-        });
+    private void setupTextViewClick(View parentView, int textViewId, String sqlQuery, String param) {
+        TextView textView = parentView.findViewById(textViewId);
+        textView.setOnClickListener(v -> launchResultActivity(sqlQuery, param));
     }
 
-    private void searchCategory(String sqlQuery, String param) {
-        Map<String, Object> query = new HashMap<>();
-        query.put("sqlQuery", sqlQuery);
-        query.put("param", param);
-
-        service.searchQuery(query).enqueue(new Callback<List<CampingSiteDto>>() {
-            @Override
-            public void onResponse(Call<List<CampingSiteDto>> call, Response<List<CampingSiteDto>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<CampingSiteDto> campingSites = response.body();
-                    CardViewAdapter adapter = new CardViewAdapter(campingSites);
-                } else {
-                    Toast.makeText(getContext(), "No data found for this category", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CampingSiteDto>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void launchResultActivity(String sqlQuery, String param) {
+        Intent intent = new Intent(getActivity(), CampSiteResultActivity.class);
+        intent.putExtra("sqlQuery", sqlQuery);
+        intent.putExtra("param", param);
+        startActivity(intent);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady :");
+        Log.d(TAG, "onMapReady");
         mMap = googleMap;
-        mapHandler = new MapHandler(getContext(), mMap, mFusedLocationClient);
-        if (mapHandler != null) {
-            mapHandler.onMapReady();
-            if (permissionHelper.checkPermissions()) {
-                startLocationUpdates(); // 위치 업데이트 시작
-            } else {
-                permissionHelper.requestPermissions(); // 권한 요청
-            }
+        mapHandler = new MapHandler(requireContext(), mMap, mFusedLocationClient);
+        mapHandler.onMapReady();
+
+        if (permissionHelper.checkPermissions()) {
+            startLocationUpdates();
         } else {
-            Log.e(TAG, "Failed to initialize mapHandler.");
+            permissionHelper.requestPermissions();
         }
     }
 
     private void startLocationUpdates() {
-        if (mapHandler == null) {
-            Log.e(TAG, "mapHandler is null. Cannot start location updates.");
+        if (!permissionHelper.checkLocationServicesStatus()) {
+            permissionHelper.showDialogForLocationServiceSetting();
             return;
         }
 
-        if (!permissionHelper.checkLocationServicesStatus()) {
-            permissionHelper.showDialogForLocationServiceSetting();
-        } else if (permissionHelper.checkPermissions()) {
+        if (permissionHelper.checkPermissions() && mapHandler != null) {
             mapHandler.startLocationUpdates(locationCallback);
         }
     }
 
-    private final LocationCallback locationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            List<Location> locationList = locationResult.getLocations();
-            if (!locationList.isEmpty()) {
-                Location location = locationList.get(locationList.size() - 1);
-                LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
-                String markerTitle = mapHandler.getCurrentAddress(currentPosition);
-                String markerSnippet = "위도:" + location.getLatitude() + " 경도:" + location.getLongitude();
-                mapHandler.setCurrentLocation(location, markerTitle, markerSnippet);
-            }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionHelper.handlePermissionsResult(requestCode, permissions, grantResults);
+        if (permissionHelper.checkPermissions()) {
+            startLocationUpdates();
         }
-    };
+    }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         if (mapHandler != null && permissionHelper.checkPermissions()) {
-            mapHandler.startLocationUpdates(locationCallback);
+            startLocationUpdates();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopLocationUpdates();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mFusedLocationClient != null) {
+        stopLocationUpdates();
+    }
+
+    private void stopLocationUpdates() {
+        if (mFusedLocationClient != null && locationCallback != null) {
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }

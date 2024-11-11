@@ -1,13 +1,18 @@
 package com.example.campingmaster.api.googlemap;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
+import com.example.campingmaster.api.gocamping.dto.CampingSiteDto;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -17,96 +22,120 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 public class MapHandler {
-    private static final String TAG = "MAP";
+    private static final String TAG = "MapHandler";
+    private static final int UPDATE_INTERVAL_MS = 1000;
+    private static final int FASTEST_UPDATE_INTERVAL_MS = 500;
+
+    private Context context;
     private GoogleMap mMap;
-    private Marker currentMarker = null;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
-    private Context mContext;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location currentLocation;
+    private Marker currentMarker;
 
-    public MapHandler(Context context, GoogleMap googleMap, FusedLocationProviderClient fusedLocationClient) {
-        this.mContext = context;
-        this.mMap = googleMap;
-        this.mFusedLocationClient = fusedLocationClient;
-        setupLocationRequest();
-    }
-
-    private void setupLocationRequest() {
-        locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(1000)
-                .setFastestInterval(500);
+    public MapHandler(Context context, GoogleMap map, FusedLocationProviderClient locationClient) {
+        this.context = context;
+        this.mMap = map;
+        this.fusedLocationClient = locationClient;
     }
 
     public void onMapReady() {
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        mMap.setOnMapClickListener(latLng -> Log.d(TAG, "onMapClick :"));
+        setDefaultMapSettings();
+
+        // 위치 업데이트 시작
     }
 
+    private void setDefaultMapSettings() {
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+    }
 
     public void startLocationUpdates(LocationCallback locationCallback) {
-        try {
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-        } catch (SecurityException e) {
-            Log.e(TAG, "SecurityException: Permission not granted.", e);
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL_MS)
+                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
+
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
     public void setCurrentLocation(Location location, String markerTitle, String markerSnippet) {
-        if (currentMarker != null) currentMarker.remove();
-        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLatLng);
-        markerOptions.title(markerTitle);
-        markerOptions.snippet(markerSnippet);
-        markerOptions.draggable(true);
-        currentMarker = mMap.addMarker(markerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+        if (location != null) {
+            currentLocation = location;
+            LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+            if (currentMarker != null) {
+                currentMarker.remove();
+            }
+
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(currentLatLng)
+                    .title(markerTitle)
+                    .snippet(markerSnippet);
+
+            currentMarker = mMap.addMarker(markerOptions);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+        }
+    }
+
+    public void addCampingSiteMarker(CampingSiteDto campingSite) {
+        if (campingSite != null && campingSite.getMapX() != null && campingSite.getMapY() != null) {
+            try {
+                // 캠핑지 좌표 추출
+                double longitude = Double.parseDouble(campingSite.getMapX()); //127.5112565
+                double latitude = Double.parseDouble(campingSite.getMapY()); //37.7278127
+                LatLng position = new LatLng(latitude, longitude);
+                Log.e("MapHandler", position.toString());
+
+                // 마커 옵션 설정
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(position)
+                        .title(campingSite.getName())
+                        .snippet(campingSite.getAddress());
+
+                // 마커 추가
+                Marker marker = mMap.addMarker(markerOptions);
+
+                // 마커가 제대로 추가되었으면, 카메라를 해당 위치로 이동
+                if (marker != null) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+                }
+            } catch (NumberFormatException e) {
+                Log.e("MapHandler", "Invalid coordinates: " + campingSite.getMapX() + ", " + campingSite.getMapY());
+            }
+        } else {
+            Log.e("MapHandler", "Invalid camping site data: " + campingSite);
+        }
     }
 
     public String getCurrentAddress(LatLng latlng) {
-        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
         } catch (IOException ioException) {
-            Toast.makeText(mContext, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-            return "지오코더 서비스 사용불가";
+            return "지오코더 서비스 사용 불가";
         } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(mContext, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
             return "잘못된 GPS 좌표";
         }
 
         if (addresses == null || addresses.isEmpty()) {
-            Toast.makeText(mContext, "주소 미발견", Toast.LENGTH_LONG).show();
             return "주소 미발견";
-        } else {
-            return addresses.get(0).getAddressLine(0);
         }
-    }
 
-    public void setDefaultLocation() {
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
-        String markerTitle = "위치정보 가져올 수 없음";
-        String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
-
-        if (currentMarker != null) currentMarker.remove();
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(DEFAULT_LOCATION);
-        markerOptions.title(markerTitle);
-        markerOptions.snippet(markerSnippet);
-        markerOptions.draggable(true);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        currentMarker = mMap.addMarker(markerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15));
+        Address address = addresses.get(0);
+        return address.getAddressLine(0);
     }
 }

@@ -20,6 +20,10 @@ public class CampingSiteDto implements Serializable {
     private String locationCategory;
     @SerializedName("tel")
     private String phoneNumber;
+    @SerializedName("mapX")
+    private String mapX;
+    @SerializedName("mapY")
+    private String mapY;
     @SerializedName("homepageUrl")
     private String homepageUrl;
     @SerializedName("season")
@@ -35,6 +39,18 @@ public class CampingSiteDto implements Serializable {
     @SerializedName("reserveUrl")
     private String reserveUrl;
 
+    @Override
+    public String toString() {
+        return "CampingSiteDto{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", mapX='" + mapX + '\'' +
+                ", mapY='" + mapY + '\'' +
+                ", description='" + description + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
+
 
     public Long getContentId() {
         return contentId;
@@ -43,6 +59,8 @@ public class CampingSiteDto implements Serializable {
     public String getName() {
         return name;
     }
+    public String getMapX(){ return mapX; }
+    public String getMapY(){ return mapY; }
 
     public String getFeatureNm() {
         return featureNm;
