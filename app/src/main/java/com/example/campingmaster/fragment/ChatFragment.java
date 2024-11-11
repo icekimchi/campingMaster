@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campingmaster.BuildConfig;
 import com.example.campingmaster.R;
 import com.example.campingmaster.adapter.MessageAdapter;
 import com.example.campingmaster.model.Message;
@@ -44,6 +45,9 @@ public class ChatFragment extends Fragment {
 
     private List<Message> messageList;
     private MessageAdapter messageAdapter;
+    private static final String API_KEY = BuildConfig.GPT_API;
+    private static final String API_ENDPOINT = BuildConfig.GPT_ENDPOINT;
+
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
