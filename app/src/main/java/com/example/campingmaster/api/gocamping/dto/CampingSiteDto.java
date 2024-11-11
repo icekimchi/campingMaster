@@ -17,7 +17,7 @@ public class CampingSiteDto implements Serializable {
     @SerializedName("category")
     private String category;
     @SerializedName("locationCategory")
-    private String lcationCategory;
+    private String locationCategory;
     @SerializedName("tel")
     private String phoneNumber;
     @SerializedName("homepageUrl")
@@ -60,8 +60,8 @@ public class CampingSiteDto implements Serializable {
         return category;
     }
 
-    public String getLcationCategory() {
-        return lcationCategory;
+    public String getLocationCategory() {
+        return locationCategory;
     }
 
     public String getPhoneNumber() {
