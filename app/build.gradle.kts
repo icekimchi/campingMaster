@@ -1,5 +1,16 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
+}
+
+// local.properties에서 선언한 값들을 불러와 주기 위함
+val properties = Properties()
+val localPropertiesFile = project.rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { stream ->
+        properties.load(stream)
+    }
 }
 
 android {
@@ -14,6 +25,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GPT_API", properties.getProperty("GPT_API"))
+        buildConfigField("String", "GPT_ENDPOINT", properties.getProperty("GPT_ENDPOINT"))
     }
 
     buildTypes {
@@ -31,6 +45,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
+        buildConfig = true
     }
 }
 
