@@ -48,7 +48,6 @@ public class ChatFragment extends Fragment {
     private static final String API_KEY = BuildConfig.GPT_API;
     private static final String API_ENDPOINT = BuildConfig.GPT_ENDPOINT;
 
-
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private OkHttpClient client = new OkHttpClient.Builder()
@@ -111,10 +110,18 @@ public class ChatFragment extends Fragment {
         try {
             json.put("model", "gpt-3.5-turbo");
             JSONArray messagesArray = new JSONArray();
+
+            // 페르소나 정의 추가
+            JSONObject systemMessage = new JSONObject();
+            systemMessage.put("role", "system");
+            systemMessage.put("content", "당신은 '캠핑의 고수'라는 이름의 친절하고 유머러스한 캠ㅗㅑ핑 전문가입니다. 캠핑장 추천, 캠핑 장비, 캠핑 요리, 안전 수칙 등에 대한 풍부한 지식을 가지고 있으며, 비공식적이고 친근한 어조로 사용자와 대화합니다. 사용자에게 질문을 던지며 대화를 유도하세요.");
+            messagesArray.put(systemMessage);
+
             JSONObject messageObject = new JSONObject();
             messageObject.put("role", "user");
             messageObject.put("content", question);
             messagesArray.put(messageObject);
+
             json.put("messages", messagesArray);
             json.put("temperature", 0.8);
             json.put("max_tokens", 1024);
@@ -156,6 +163,7 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onDestroyView() {
