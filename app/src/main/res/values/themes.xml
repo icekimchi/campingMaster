@@ -48,16 +48,21 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+
     <style name="OptionTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/option_box</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:paddingStart">16dp</item>
-        <item name="android:paddingEnd">16dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:fontFamily">@font/apple_b</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:textColor">@color/optionBoxTextColor</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:backgroundTint">?attr/selectableItemBackground</item>
+        <item name="android:backgroundTintMode">multiply</item>
     </style>
 
 </resources>

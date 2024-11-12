@@ -11,4 +11,16 @@
     <color name="green">#7EED89</color>
     <color name="orange">#FFBA00</color>
     <color name="clickAccent">#EA484E</color>
+
+    <color name="backgroundColor">#F7FAFC</color>
+    <color name="titleTextColor">#2D3748</color>
+    <color name="subtitleTextColor">#4A5568</color>
+
+    <color name="ButtonColor">#5A67D8</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+
+    <!-- Option Box Colors -->
+    <color name="optionBoxBackground">#E2E8F0</color>
+    <color name="optionBoxTextColor">#2B6CB0</color>
+
 </resources>
