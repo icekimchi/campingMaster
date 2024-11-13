@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:layout_margin="10dp"
-    card_view:cardBackgroundColor="#f7f2f3"
+    card_view:cardBackgroundColor="@color/white"
     card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="10dp"
-    card_view:contentPadding="4dp">
+    card_view:cardElevation="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,6 +27,7 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="0.3"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 

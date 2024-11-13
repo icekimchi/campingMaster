@@ -138,6 +138,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         Intent intent = new Intent(getActivity(), CampSiteResultActivity.class);
         intent.putExtra("sqlQuery", sqlQuery);
         intent.putExtra("param", param);
+        intent.putExtra("keyword", param.replace("%", ""));
         startActivity(intent);
     }
 

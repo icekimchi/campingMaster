@@ -61,7 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="@color/material_on_surface_emphasis_medium" />
 
