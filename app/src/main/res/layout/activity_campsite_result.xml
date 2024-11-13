@@ -1,11 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!-- Toolbar (padding 제외) -->
+    <include
+        android:id="@+id/result_toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <!-- Main content container with padding -->
+    <LinearLayout
+        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_below="@id/result_toolbar"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Filter Spinners in a horizontal layout -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <!-- 카테고리 필터 -->
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/category_options"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/filter_chip_background"
+                android:popupBackground="@color/white"
+                android:spinnerMode="dropdown"
+                android:drawableRight="@drawable/ic_dropdown_arrow" />
+
+            <!-- 자연환경 필터 -->
+            <Spinner
+                android:id="@+id/spinnerNature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/nature_options"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/filter_chip_background"
+                android:popupBackground="@color/white"
+                android:drawableRight="@drawable/ic_dropdown_arrow" />
+
+            <!-- 테마여행 필터 -->
+            <Spinner
+                android:id="@+id/spinnerTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/theme_options"
+                android:background="@drawable/filter_chip_background"
+                android:popupBackground="@color/white"
+                android:drawableRight="@drawable/ic_dropdown_arrow" />
+        </LinearLayout>
+
+        <!-- 선택한 카테고리를 보여줄 ChipGroup -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSelectedCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:singleLine="false"
+            app:chipSpacing="8dp" />
+
+        <!-- 리스트를 표시할 RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </RelativeLayout>

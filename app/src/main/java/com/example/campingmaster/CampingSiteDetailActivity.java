@@ -1,18 +1,16 @@
 package com.example.campingmaster;
 
+import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import com.bumptech.glide.Glide;
-import com.example.campingmaster.api.RetrofitClient;
-import com.example.campingmaster.api.RetrofitService;
 import com.example.campingmaster.api.gocamping.dto.CampingSiteDto;
 import com.example.campingmaster.api.googlemap.MapHandler;
 import com.example.campingmaster.utils.PermissionHelper;
@@ -20,33 +18,41 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
-public class CampingSiteDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class CampingSiteDetailActivity extends ToolBarActivity implements OnMapReadyCallback {
     private TextView nameTextView;
     private TextView addressTextView;
     private TextView descriptionTextView;
+    private TextView detailTextView;
     private ImageView siteImageView;
+    private TextView urlTextView;
+    private TextView reserveText;
+    private TextView categoryText;
     private GoogleMap mMap;
     private MapHandler mapHandler;
     private FusedLocationProviderClient mFusedLocationClient;
     private PermissionHelper permissionHelper;
     private CampingSiteDto campingSite;
     private MapView mapView;
+    private String siteName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camping_site_detail);
+
+        // 상태 바만 투명하게 설정
+        Window window = getWindow();
+        // 상태 바만 투명하게 설정하고 내비게이션 바는 그대로 유지
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        Intent intent = getIntent();
+        siteName = intent.getStringExtra("citeName");
+        setupToolbar(siteName); // 툴바 설정
 
         initializeComponents();
         setupMapView(savedInstanceState);
@@ -76,6 +82,10 @@ public class CampingSiteDetailActivity extends AppCompatActivity implements OnMa
         addressTextView = findViewById(R.id.addressTextView);
         descriptionTextView = findViewById(R.id.descriptionTextView);
         siteImageView = findViewById(R.id.siteImageView);
+        detailTextView = findViewById(R.id.detailText);
+        urlTextView = findViewById(R.id.homepageText);
+        reserveText = findViewById(R.id.reserveText);
+        categoryText = findViewById(R.id.categoryText);
     }
 
     private void loadCampingSiteData() {
@@ -86,15 +96,49 @@ public class CampingSiteDetailActivity extends AppCompatActivity implements OnMa
     }
 
     private void updateUI() {
-        nameTextView.setText(getValueOrDefault(campingSite.getName(), "Name not available"));
-        addressTextView.setText(getValueOrDefault(campingSite.getAddress(), "Address not available"));
-        descriptionTextView.setText(getValueOrDefault(campingSite.getDescription(), "Description not available"));
+        setTextOrHide(nameTextView, campingSite.getName(), "Name not available");
+        setTextOrHide(addressTextView, campingSite.getAddress(), "Address not available");
+        setTextOrHide(descriptionTextView, campingSite.getDescription(), "Description not available");
+        setTextOrHide(detailTextView, campingSite.getFeatureNm(), "");
+        setTextOrHide(categoryText, campingSite.getCategory(), "");
 
+        // Set homepage URL as clickable
+        setUrlOrHide(urlTextView, campingSite.getHomepageUrl(), "Visit Homepage");
+
+        // Set reservation URL as clickable
+        setUrlOrHide(reserveText, campingSite.getReserveUrl(), "Reserve Now");
+
+        // Load image if available, else set default image
         if (campingSite.getImgUrl() != null) {
             loadImageFromUrl(campingSite.getImgUrl(), siteImageView);
         } else {
             siteImageView.setImageResource(R.drawable.logo_108x82);
         }
+    }
+
+    private void setTextOrHide(TextView textView, String text, String defaultText) {
+        if (text == null || text.isEmpty()) {
+            textView.setVisibility(View.GONE); // Hide if no text
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(text);
+        }
+    }
+
+    private void setUrlOrHide(TextView textView, String url, String displayText) {
+        if (url == null || url.isEmpty()) {
+            textView.setVisibility(View.GONE); // Hide if no URL
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(url);
+            textView.setTextColor(getResources().getColor(R.color.blue)); // Set text color to look like a link
+            textView.setOnClickListener(v -> openLink(url));
+        }
+    }
+
+    private void openLink(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 
     private String getValueOrDefault(String value, String defaultValue) {
@@ -118,11 +162,9 @@ public class CampingSiteDetailActivity extends AppCompatActivity implements OnMa
             return;
         }
 
-        // MapHandler 생성 및 맵 설정
         mapHandler = new MapHandler(this, mMap, mFusedLocationClient);
         mapHandler.onMapReady();
 
-        // 캠핑장 마커 추가
         if (campingSite != null) {
             mapHandler.addCampingSiteMarker(campingSite);
         }

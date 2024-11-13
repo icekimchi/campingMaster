@@ -2,7 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/backgroundColor"
+    tools:context=".OnboardingActivity">
 
     <!-- Title Section -->
     <TextView
@@ -59,8 +61,7 @@
             android:id="@+id/option2"
             style="@style/OptionTextStyle"
             android:text="글램핑"
-            android:layout_gravity="center"
-            android:layout_margin="4dp"/> <!-- 간격을 줄이기 위해 마진 추가 -->
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/option3"
