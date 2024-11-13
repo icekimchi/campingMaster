@@ -37,6 +37,7 @@ public class MapHandler {
     private FusedLocationProviderClient fusedLocationClient;
     private Location currentLocation;
     private Marker currentMarker;
+    private boolean isCameraMoved = false;
 
     public MapHandler(Context context, GoogleMap map, FusedLocationProviderClient locationClient) {
         this.context = context;
@@ -46,8 +47,6 @@ public class MapHandler {
 
     public void onMapReady() {
         setDefaultMapSettings();
-
-        // 위치 업데이트 시작
     }
 
     private void setDefaultMapSettings() {
@@ -86,7 +85,12 @@ public class MapHandler {
                     .snippet(markerSnippet);
 
             currentMarker = mMap.addMarker(markerOptions);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+
+            // 카메라는 첫 번째 위치 업데이트 후에는 이동하지 않도록 설정
+            if (!isCameraMoved) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng)); // 처음만 카메라 이동
+                isCameraMoved = true;  // 카메라 이동을 완료했으므로, 이후에는 이동하지 않음
+            }
         }
     }
 
@@ -99,7 +103,6 @@ public class MapHandler {
                 LatLng position = new LatLng(latitude, longitude);
                 Log.e("MapHandler", position.toString());
 
-                // 마커 옵션 설정
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(position)
                         .title(campingSite.getName())
@@ -119,6 +122,30 @@ public class MapHandler {
             Log.e("MapHandler", "Invalid camping site data: " + campingSite);
         }
     }
+
+    public void addCampingSitesMarker(CampingSiteDto campingSite) {
+        if (campingSite != null && campingSite.getMapX() != null && campingSite.getMapY() != null) {
+            double longitude = Double.parseDouble(campingSite.getMapX()); // 예: 127.5112565
+            double latitude = Double.parseDouble(campingSite.getMapY()); // 예: 37.7278127
+            LatLng position = new LatLng(latitude, longitude);
+
+            // 마커 옵션 설정
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(position)
+                    .title(campingSite.getName())
+                    .snippet(campingSite.getAddress());
+
+            // 마커 추가
+            Marker marker = mMap.addMarker(markerOptions);
+
+            // 마커에 태그 설정 (캠핑장 이름 사용)
+            if (marker != null) {
+                marker.setTag(campingSite.getName());
+            }
+        }
+    }
+
+
 
     public String getCurrentAddress(LatLng latlng) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());

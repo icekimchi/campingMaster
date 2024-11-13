@@ -45,4 +45,32 @@
     <string name="tab_chat">채팅</string>
     <string name="tab_info">내정보</string>
 
+    <!-- 카테고리 필터 옵션 -->
+    <string-array name="category_options">
+        <item>카테고리</item>
+        <item>카라반</item>
+        <item>자동차야영장</item>
+        <item>글램핑</item>
+    </string-array>
+
+    <!-- 자연환경 필터 옵션 -->
+    <string-array name="nature_options">
+        <item>자연환경</item>
+        <item>계곡</item>
+        <item>해수욕</item>
+        <item>낚시</item>
+        <item>강</item>
+        <item>수상레저</item>
+    </string-array>
+
+    <!-- 테마여행 필터 옵션 -->
+    <string-array name="theme_options">
+        <item>테마</item>
+        <item>봄꽃</item>
+        <item>여름물놀이</item>
+        <item>가을단풍</item>
+        <item>일몰명소</item>
+        <item>일출명소</item>
+    </string-array>
+
 </resources>

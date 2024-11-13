@@ -16,29 +16,36 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.campingmaster.CampSiteResultActivity;
+import com.example.campingmaster.CampingSiteDetailActivity;
 import com.example.campingmaster.R;
 import com.example.campingmaster.adapter.CardViewAdapter;
 import com.example.campingmaster.api.RetrofitClient;
 import com.example.campingmaster.api.RetrofitService;
 import com.example.campingmaster.api.gocamping.dto.CampingSiteDto;
+import com.example.campingmaster.api.gocamping.dto.LocationSearchDto;
 import com.example.campingmaster.api.googlemap.MapHandler;
 import com.example.campingmaster.utils.PermissionHelper;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "googlemap_example";
     private GoogleMap mMap;
     private MapHandler mapHandler;
-    private static final int UPDATE_INTERVAL_MS = 1000;
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 500;
     private FusedLocationProviderClient mFusedLocationClient;
     private PermissionHelper permissionHelper;
     private RetrofitService service;
     private LocationCallback locationCallback;
     private SupportMapFragment mapFragment;
+    private boolean isFirstLocationUpdate = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +89,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
             String markerTitle = mapHandler.getCurrentAddress(currentPosition);
             String markerSnippet = "위도:" + location.getLatitude() + " 경도:" + location.getLongitude();
-            mapHandler.setCurrentLocation(location, markerTitle, markerSnippet);
+
+            if (isFirstLocationUpdate) {
+                mapHandler.setCurrentLocation(location, markerTitle, markerSnippet);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
+                isFirstLocationUpdate = false;
+            } else {
+                mapHandler.setCurrentLocation(location, markerTitle, markerSnippet);
+            }
         }
     }
 
@@ -127,6 +141,29 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         startActivity(intent);
     }
 
+    private void sendLocationToServer(LocationSearchDto data) {
+        String mapX = data.getMapX();
+        String mapY = data.getMapY();
+        String radius = data.getRadius();
+        service.searchByLocation(mapX, mapY, radius).enqueue(new Callback<List<CampingSiteDto>>() {
+            @Override
+            public void onResponse(Call<List<CampingSiteDto>> call, Response<List<CampingSiteDto>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<CampingSiteDto> campingSites = response.body();
+                    for(CampingSiteDto site: campingSites){
+                        mapHandler.addCampingSitesMarker(site);
+                    }
+                }else {
+                }
+            }
+            @Override
+            public void onFailure(Call<List<CampingSiteDto>> call, Throwable t) {
+                Log.e("CampingSites", "Response failed or empty body");
+            }
+        });
+    }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady");
@@ -134,11 +171,79 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         mapHandler = new MapHandler(requireContext(), mMap, mFusedLocationClient);
         mapHandler.onMapReady();
 
+        mMap.setOnCameraIdleListener(() -> {
+            LatLng center = mMap.getCameraPosition().target;
+            LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+
+            loadCampingSitesByLocation(center, bounds);
+        });
+
+        mMap.setOnInfoWindowClickListener(marker -> {
+            String siteName = (String) marker.getTag(); // 마커의 태그로 캠핑장 이름 가져옴
+            if (siteName != null) {
+                fetchSiteDetailAndNavigate(siteName);
+            } else {
+                Log.e("Map", "Marker tag is null");
+            }
+        });
+
         if (permissionHelper.checkPermissions()) {
             startLocationUpdates();
         } else {
             permissionHelper.requestPermissions();
         }
+    }
+
+    private void fetchSiteDetailAndNavigate(String siteName) {
+        Log.d("CampingSiteDetail", "Fetching details for site: " + siteName);
+
+        service.getSiteDetail(siteName).enqueue(new Callback<CampingSiteDto>() {
+            @Override
+            public void onResponse(Call<CampingSiteDto> call, Response<CampingSiteDto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    CampingSiteDto siteDetail = response.body();
+
+                    // 다음 액티비티로 이동
+                    Intent intent = new Intent(getActivity(), CampingSiteDetailActivity.class);
+                    intent.putExtra("campingSite", siteDetail);
+                    startActivity(intent);
+                } else {
+                    Log.e("CampingSiteDetail", "Response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CampingSiteDto> call, Throwable t) {
+                Log.e("CampingSiteDetail", "API call failed: " + t.getMessage());
+            }
+        });
+    }
+
+    private double calculateRadius(LatLngBounds bounds) {
+        LatLng center = bounds.getCenter();
+
+        LatLng northeast = bounds.northeast;
+
+        float[] results = new float[1];
+        Location.distanceBetween(center.latitude, center.longitude,
+                northeast.latitude, northeast.longitude,
+                results);
+
+        return results[0];
+    }
+
+    private void loadCampingSitesByLocation(LatLng center, LatLngBounds bounds) {
+        String mapX = String.valueOf(center.longitude);
+        String mapY = String.valueOf(center.latitude);
+
+        double radius = calculateRadius(bounds);
+
+        if (radius > 20000) {
+            radius = 20000;
+        }
+
+        LocationSearchDto data = new LocationSearchDto(mapX, mapY, String.valueOf(radius));
+        sendLocationToServer(data);
     }
 
     private void startLocationUpdates() {
